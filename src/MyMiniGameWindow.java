@@ -1,50 +1,55 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import MiniGamePackage.MiniGameObserver;
 
 /**
- * creates MiniGameWindow and its contents
+ * creates MiniGameWindow, buttons and adds Game
  * @author Thomas
  *
  */
-public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGameObserver
+public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGameObserver, KeyListener
 {
-	JButton upButton = new JButton("up");
-	JButton downButton = new JButton("down");
-	JButton fireButton = new JButton("bam");
-	JButton startButton = new JButton("start");
+	ImageButton upButton = new ImageButton("icons/up.png");
+	ImageButton downButton = new ImageButton("icons/down.png");
+	ImageButton attackButton = new ImageButton("icons/attack.png");
+	ImageButton startButton = new ImageButton("icons/start.png");
 	
 	MyMiniGame theGame = new MyMiniGame();
 	
 	public MyMiniGameWindow()
 	{
-		setSize(640, 640);
+		setSize(640, 825);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		// add buttons to toolbar
-		JToolBar toolbar = new JToolBar();
-		add(toolbar, BorderLayout.NORTH);
-		toolbar.add(upButton);
-		toolbar.add(downButton);
-		toolbar.add(fireButton);
-		toolbar.add(startButton);
+		JPanel buttonContainer = new JPanel();
+		add(buttonContainer, BorderLayout.SOUTH);
+		buttonContainer.add(upButton);
+		buttonContainer.add(downButton);
+		buttonContainer.add(attackButton);
+		buttonContainer.add(startButton);
 		
 		// add action listeners for buttons
 		upButton.addActionListener(this);
 		downButton.addActionListener(this);
-		fireButton.addActionListener(this);
+		attackButton.addActionListener(this);
 		startButton.addActionListener(this);
+		
 		
 		add(theGame, BorderLayout.CENTER);
 		theGame.registerMiniGameObserver(this);
 		
+		this.addKeyListener(this);
 		setVisible(true);
 	}
 
@@ -67,7 +72,7 @@ public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGame
 		{
 			theGame.playerActionDown();
 		}
-		else if(e.getSource() == fireButton)
+		else if(e.getSource() == attackButton)
 		{
 			theGame.playerActionGo();
 		}
@@ -75,5 +80,45 @@ public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGame
 		{
 			theGame.newGame(1);
 		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		// TODO Auto-generated method stub
+		switch (e.getKeyCode()) 
+		{
+        case KeyEvent.VK_W:
+            System.out.println("up");
+            break;
+
+        case KeyEvent.VK_S:
+            System.out.println("down");
+            break;
+
+        case KeyEvent.VK_A:
+            System.out.println("A");
+            break;
+            
+        case KeyEvent.VK_D:
+            System.out.println("D");
+            break;
+
+        default: 
+        	System.out.println("default");
+        	break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

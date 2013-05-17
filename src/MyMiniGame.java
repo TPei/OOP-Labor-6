@@ -1,10 +1,14 @@
 import MiniGamePackage.MiniGame;
 import MiniGamePackage.Sprite;
 
+/**
+ * game logic
+ * @author Thomas
+ */
 public class MyMiniGame extends MiniGame
 {
-
-    final int NR_OF_FIELDS = 8;
+	
+    final int NR_OF_FIELDS = 10;
 
     // 0: not set, 1: computer, 2: player
     int[] fieldStatus = new int[NR_OF_FIELDS]; 
@@ -21,7 +25,7 @@ public class MyMiniGame extends MiniGame
 
     public MyMiniGame()
     {
-		getBackgroundPicture().paintRectangle(0, 0, 640, 640, -1, 255, 255, 0);
+		getBackgroundPicture().paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
 	
 		fieldSprites[0].paintRectangle(0, 0, 32, 32, -1, 255, 255, 255);
 		fieldSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 0, 0);
@@ -113,29 +117,29 @@ public class MyMiniGame extends MiniGame
     @Override
     public int getCurrentComputerScore()
     {
-		int cs = 0;
+		int computerScore = 0;
 		for (int i = 0; i < fieldStatus.length; i++)
 		{
 		    if (fieldStatus[i] == 1)
 		    {
-		    	++cs;
+		    	++computerScore;
 		    }
 		}
-		return cs * 100;
+		return computerScore;
     }
 
     @Override
     public int getCurrentPlayerScore()
     {
-		int ps = 0;
+		int playerScore = 0;
 		for (int i = 0; i < fieldStatus.length; i++)
 		{
 		    if (fieldStatus[i] == 2)
 		    {
-		    	++ps;
+		    	++playerScore;
 		    }
 		}
-		return ps * 100;
+		return playerScore;
     }
 
     @Override
@@ -153,7 +157,7 @@ public class MyMiniGame extends MiniGame
     @Override
     public int getNrofComputerGoActions(int difficulty)
     {
-    	return difficulty * 10;
+    	return 10*difficulty;
     }
 
     private void updatePositions()
