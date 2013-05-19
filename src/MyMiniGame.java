@@ -8,44 +8,57 @@ import MiniGamePackage.Sprite;
 public class MyMiniGame extends MiniGame
 {
 	
-    final int NR_OF_FIELDS = 10;
-
+    final int NR_OF_FIELDS = 12;
+    
     // 0: not set, 1: computer, 2: player
     int[] fieldStatus = new int[NR_OF_FIELDS]; 
-
-    Sprite[] fieldSprites = getSprites(0);
+    
+    Sprite[] gameSprites = getSprites(0);
     Sprite[] computerStoneSprites = getSprites(3);
     Sprite[] playerStoneSprites = getSprites(4);
-
+    
     Sprite computerSprite = getSprite(1, 0);
     Sprite playerSprite = getSprite(2, 0);
-
+    
     int playerPosition = 0;
     int computerPosition = 0;
-
+    
+    /**
+     * MyMiniGame constructor puts sprites and playerSprites onto the field
+     */
     public MyMiniGame()
     {
+    	// paint grey background
 		getBackgroundPicture().paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
+		
+		// create neutral Sprites
+		//gameSprites[0].paintRectangle(0, 0, 32, 32, -1, 255, 255, 255);
+		gameSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 255, 255);
 	
-		fieldSprites[0].paintRectangle(0, 0, 32, 32, -1, 255, 255, 255);
-		fieldSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 0, 0);
+		// create sprites that have been taken by player or computer
+		computerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
+		playerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
 	
-		playerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 128, 0);
-		computerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 0, 255);
-	
-		computerSprite.paintRectangle(5, 0, 22, 32, -1, 0, 0, 255);
-		playerSprite.paintRectangle(5, 0, 22, 32, -1, 255, 128, 0);
+		// create player and computer sprite
+		//computerSprite.paintRectangle(5, 0, 32, 32, -1, 0, 0, 255);
+		computerSprite.paintImage("icons/ship.png");
+		
+		//playerSprite.paintRectangle(5, 0, 32, 32, -1, 255, 0, 0);
+		playerSprite.paintImage("icons/ship.png");
 
     }
-
+    
+    /**
+     * initialize game
+     */
     @Override
     protected void initGame()
     {
 		for (int i = 0; i < NR_OF_FIELDS; i++)
 		{
-		    fieldSprites[i].setPosition(304, i * 40 + 100);
-		    playerStoneSprites[i].setPosition(304, i * 40 + 100);
-		    computerStoneSprites[i].setPosition(304, i * 40 + 100);
+		    gameSprites[i].setPosition(304, i * 40 + 80);
+		    playerStoneSprites[i].setPosition(304, i * 40 + 80);
+		    computerStoneSprites[i].setPosition(304, i * 40 + 80);
 		    playerStoneSprites[i].dontShow();
 		    computerStoneSprites[i].dontShow();
 	
@@ -56,12 +69,13 @@ public class MyMiniGame extends MiniGame
 		computerPosition = 0;
 		updatePositions();
     }
-
+    
     @Override
     protected void gameHasStarted()
     {
+    	
     }
-
+    
     @Override
     protected void computerMove(Action action)
     {
@@ -84,7 +98,7 @@ public class MyMiniGame extends MiniGame
 		    break;
 		}
     }
-
+    
     @Override
     protected void playerMove(Action action)
     {
@@ -102,18 +116,32 @@ public class MyMiniGame extends MiniGame
 		    fieldStatus[playerPosition] = 2;
 		    playerStoneSprites[playerPosition].show();
 		    computerStoneSprites[playerPosition].dontShow();
-	
 		    break;
 		default:
 		    break;
 		}
     }
-
+    
     @Override
     protected void gameHasFinished()
     {
+    	String winner = "";
+    	if(getCurrentComputerScore() > getCurrentPlayerScore())
+    	{
+    		winner = "The Computer won!";
+    	}
+    	else if(getCurrentComputerScore() < getCurrentPlayerScore())
+    	{
+    		winner = "The Player won!";
+    	}
+    	else
+    	{
+    		winner = "It's a draw!";
+    	}
+    	
+    	System.out.println(winner);
     }
-
+    
     @Override
     public int getCurrentComputerScore()
     {
@@ -127,7 +155,7 @@ public class MyMiniGame extends MiniGame
 		}
 		return computerScore;
     }
-
+    
     @Override
     public int getCurrentPlayerScore()
     {
@@ -141,29 +169,38 @@ public class MyMiniGame extends MiniGame
 		}
 		return playerScore;
     }
-
+    
     @Override
     public String getName()
     {
     	return "My great game!";
     }
-
+    
+    /**
+     * determines max no of shots for player dependent on difficulty
+     */
     @Override
     public int getNrOfPlayerGoActionsMax(int difficulty)
     {
-    	return 10;
+    	return 50/difficulty;
     }
-
+    
+    /**
+     * determines max no of shots for computer dependent on difficulty
+     */
     @Override
     public int getNrofComputerGoActions(int difficulty)
     {
-    	return 10*difficulty;
+    	return 5*difficulty;
     }
-
+    
+    /**
+     * updates positions of player and computer sprites
+     */
     private void updatePositions()
     {
-		computerSprite.setPosition(200, computerPosition * 40 + 100);
-		playerSprite.setPosition(400, playerPosition * 40 + 100);
+		computerSprite.setPosition(200, computerPosition * 40 + 80);
+		playerSprite.setPosition(400, playerPosition * 40 + 80);
     }
 
 }
