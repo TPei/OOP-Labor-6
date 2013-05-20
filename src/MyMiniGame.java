@@ -13,10 +13,15 @@ import MiniGamePackage.Sprite;
  */
 public class MyMiniGame extends MiniGame
 {
-	/**
-	 * size of field (no of sprites etc.)
-	 */
-    final int FIELD_SIZE = 12;
+	// size of field (no of sprites)
+    final int FIELD_SIZE = 13;
+    
+    // starting field for player and computer
+    final int PLAYER_START_POS = (int)(FIELD_SIZE / 2);
+    final int COMPUTER_START_POS = (int)(FIELD_SIZE / 2);
+    
+    // offset for sprites depending on field size, requierd so that field is centered
+    final int POS_OFFSET = 60;
     
     // 0: not set, 1: computer, 2: player
     int[] spriteStatus = new int[FIELD_SIZE]; 
@@ -29,8 +34,8 @@ public class MyMiniGame extends MiniGame
     Sprite[] computerConqueredSprites = getSprites(3);
     Sprite[] playerConqueredSprites = getSprites(4);
     
-    int playerPosition = 0;
-    int computerPosition = 0;
+    int playerPosition = PLAYER_START_POS;
+    int computerPosition = COMPUTER_START_POS;
     
     /**
      * MyMiniGame constructor puts sprites and playerSprites onto the field
@@ -42,10 +47,13 @@ public class MyMiniGame extends MiniGame
 		
 		// create neutral Sprites
 		gameSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 255, 255);
+		gameSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 	
 		// create sprites that have been taken by player or computer
 		computerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
+		computerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 		playerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
+		playerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 	
 		// create player and computer sprite
 		computerSprite.paintImage("icons/ship.png");
@@ -61,10 +69,10 @@ public class MyMiniGame extends MiniGame
     {
 		for (int i = 0; i < FIELD_SIZE; i++)
 		{
-		    playerConqueredSprites[i].setPosition(304, i * 40 + 80);
-		    computerConqueredSprites[i].setPosition(304, i * 40 + 80);
+		    playerConqueredSprites[i].setPosition(304, i * 40 + POS_OFFSET);
+		    computerConqueredSprites[i].setPosition(304, i * 40 + POS_OFFSET);
 		    
-		    gameSprites[i].setPosition(304, i * 40 + 80);
+		    gameSprites[i].setPosition(304, i * 40 + POS_OFFSET);
 		    
 		    // make player and computer conquered sprites invisible
 		    playerConqueredSprites[i].dontShow();
@@ -73,8 +81,8 @@ public class MyMiniGame extends MiniGame
 		    spriteStatus[i] = 0;
 		}
 	
-		playerPosition = 0;
-		computerPosition = 0;
+		playerPosition = PLAYER_START_POS;
+		computerPosition = COMPUTER_START_POS;
 		updatePositions();
     }
     
@@ -214,8 +222,9 @@ public class MyMiniGame extends MiniGame
      */
     private void updatePositions()
     {
-		computerSprite.setPosition(200, computerPosition * 40 + 80);
-		playerSprite.setPosition(400, playerPosition * 40 + 80);
+    	// position player and computer sprite
+    	playerSprite.setPosition(200, playerPosition * 40 + POS_OFFSET);
+    	computerSprite.setPosition(400, computerPosition * 40 + POS_OFFSET);
     }
 
 }

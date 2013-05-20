@@ -35,7 +35,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 	MyMiniGame theGame = new MyMiniGame();
 	
 	/**
-	 * difficulty for the game
+	 * difficulty of the game
 	 */
 	int difficulty = 1;
 
@@ -75,6 +75,29 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		startButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		// start a new game with set difficulty
+        		
+        		try
+				{
+        			// should display a little countdown before the game starts in the title bar
+        			setTitle("Game starting in 3...");
+        			System.out.println("3");
+        			setVisible(true);
+					Thread.sleep(1000);
+					setTitle("Game starting in 2...");
+					System.out.println("2");
+					setVisible(true);
+					Thread.sleep(1000);
+	        		setTitle("Game starting in 1...");
+	        		System.out.println("1");
+	        		setVisible(true);
+	        		Thread.sleep(1000);
+	        		setTitle("GO!");
+				} catch (InterruptedException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
     			theGame.newGame(difficulty);
     			theGame.playerActionGo();
         	}
@@ -100,7 +123,14 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
         // get game info and explain rules
         getGameInfoMenu.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		JOptionPane.showMessageDialog(new JFrame(), "Attack planets with your space ship and conquer them. \nWhoever occupies more planets in the end wins. \nYour ship is on the right and when you conquer a planet it turns green. \nNeutral Planets are white. Your opponent's planets are green. \nThe Game ends after 10 seconds.");
+        		String infotext = 
+        				"Attack planets with your space ship and conquer them. " +
+        				"\nWhoever occupies more planets in the end wins. " +
+        				"\nYour ship is on the left and when you conquer a planet it turns green. " +
+        				"\nNeutral Planets are white. Your opponent's planets are green. " +
+        				"\nThe Game ends after 10 seconds.";
+        		
+        		JOptionPane.showMessageDialog(new JFrame(), infotext);
         	}
 		});
 		
@@ -112,7 +142,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		setTitle("Time left: 10s, Player: 0, Computer: 0");
 		addKeyListener(this);
 		setVisible(true);
-		askForLevel();
+		//askForLevel();
 	}
 	
 	// get and set Difficulty
