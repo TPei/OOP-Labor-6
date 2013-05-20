@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,7 +22,7 @@ public class MyMiniGame extends MiniGame
     final int PLAYER_START_POS = (int)(FIELD_SIZE / 2);
     final int COMPUTER_START_POS = (int)(FIELD_SIZE / 2);
     
-    // offset for sprites depending on field size, requierd so that field is centered
+    // offset for sprites depending on field size, required so that field is centered
     final int POS_OFFSET = 60;
     
     // 0: not set, 1: computer, 2: player
@@ -58,7 +60,29 @@ public class MyMiniGame extends MiniGame
 		// create player and computer sprite
 		computerSprite.paintImage("icons/ship.png");
 		playerSprite.paintImage("icons/ship.png");
-
+		
+		requestFocus();
+		
+		addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				System.out.println("keyTyped");
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				System.out.println("keyPressed");
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				System.out.println("keyReleased");
+			}
+		});
     }
     
     /**
