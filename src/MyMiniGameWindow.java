@@ -23,7 +23,7 @@ import MiniGamePackage.MiniGameObserver;
  * @author Thomas
  *
  */
-public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGameObserver, KeyListener
+public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyListener
 {
 	ImageButton upButton = new ImageButton("icons/upArrow.png");
 	ImageButton downButton = new ImageButton("icons/downArrow.png");
@@ -57,10 +57,28 @@ public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGame
 		buttonContainer.add(startButton);
 		
 		// add action listeners for buttons
-		upButton.addActionListener(this);
-		downButton.addActionListener(this);
-		attackButton.addActionListener(this);
-		startButton.addActionListener(this);
+		upButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		theGame.playerActionUp();
+        	}
+		});
+		downButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		theGame.playerActionDown();
+        	}
+		});
+		attackButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		theGame.playerActionGo();
+        	}
+		});
+		startButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		// start a new game with set difficulty
+    			theGame.newGame(difficulty);
+    			theGame.playerActionGo();
+        	}
+		});
 		
 		// Menu for setting difficulty
 		MenuBar myMenuBar = new MenuBar();
@@ -79,7 +97,7 @@ public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGame
         	}
 		});
 		
-        // get game info and eyplain rules
+        // get game info and explain rules
         getGameInfoMenu.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		JOptionPane.showMessageDialog(new JFrame(), "Attack planets with your space ship and conquer them. \nWhoever occupies more planets in the end wins. \nYour ship is on the right and when you conquer a planet it turns green. \nNeutral Planets are white. Your opponent's planets are green. \nThe Game ends after 10 seconds.");
@@ -116,33 +134,6 @@ public class MyMiniGameWindow extends JFrame implements ActionListener, MiniGame
 	{
 		// TODO Auto-generated method stub
 		setTitle("Time left: " + remainingTime + ", Player: " + playerScore + ",  Computer: " + computerScore + ", Still running: " + isRunning);
-	}
-	
-	/**
-	 * handles button actions
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// action events for pressed buttons
-		if(e.getSource() == upButton)
-		{
-			theGame.playerActionUp();
-		}
-		else if(e.getSource() == downButton)
-		{
-			theGame.playerActionDown();
-		}
-		else if(e.getSource() == attackButton)
-		{
-			theGame.playerActionGo();
-		}
-		else if(e.getSource() == startButton)
-		{
-			// start a new game with set difficulty
-			theGame.newGame(difficulty);
-			theGame.playerActionGo();
-		}
 	}
 	
 	@Override

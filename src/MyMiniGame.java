@@ -1,3 +1,9 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import MiniGamePackage.MiniGame;
 import MiniGamePackage.Sprite;
 
@@ -7,18 +13,21 @@ import MiniGamePackage.Sprite;
  */
 public class MyMiniGame extends MiniGame
 {
-	
-    final int NR_OF_FIELDS = 12;
+	/**
+	 * size of field (no of sprites etc.)
+	 */
+    final int FIELD_SIZE = 12;
     
     // 0: not set, 1: computer, 2: player
-    int[] fieldStatus = new int[NR_OF_FIELDS]; 
+    int[] spriteStatus = new int[FIELD_SIZE]; 
     
     Sprite[] gameSprites = getSprites(0);
-    Sprite[] computerStoneSprites = getSprites(3);
-    Sprite[] playerStoneSprites = getSprites(4);
     
     Sprite computerSprite = getSprite(1, 0);
     Sprite playerSprite = getSprite(2, 0);
+    
+    Sprite[] computerConqueredSprites = getSprites(3);
+    Sprite[] playerConqueredSprites = getSprites(4);
     
     int playerPosition = 0;
     int computerPosition = 0;
@@ -32,18 +41,14 @@ public class MyMiniGame extends MiniGame
 		getBackgroundPicture().paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
 		
 		// create neutral Sprites
-		//gameSprites[0].paintRectangle(0, 0, 32, 32, -1, 255, 255, 255);
 		gameSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 255, 255);
 	
 		// create sprites that have been taken by player or computer
-		computerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
-		playerStoneSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
+		computerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
+		playerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
 	
 		// create player and computer sprite
-		//computerSprite.paintRectangle(5, 0, 32, 32, -1, 0, 0, 255);
 		computerSprite.paintImage("icons/ship.png");
-		
-		//playerSprite.paintRectangle(5, 0, 32, 32, -1, 255, 0, 0);
 		playerSprite.paintImage("icons/ship.png");
 
     }
@@ -54,15 +59,18 @@ public class MyMiniGame extends MiniGame
     @Override
     protected void initGame()
     {
-		for (int i = 0; i < NR_OF_FIELDS; i++)
+		for (int i = 0; i < FIELD_SIZE; i++)
 		{
+		    playerConqueredSprites[i].setPosition(304, i * 40 + 80);
+		    computerConqueredSprites[i].setPosition(304, i * 40 + 80);
+		    
 		    gameSprites[i].setPosition(304, i * 40 + 80);
-		    playerStoneSprites[i].setPosition(304, i * 40 + 80);
-		    computerStoneSprites[i].setPosition(304, i * 40 + 80);
-		    playerStoneSprites[i].dontShow();
-		    computerStoneSprites[i].dontShow();
+		    
+		    // make player and computer conquered sprites invisible
+		    playerConqueredSprites[i].dontShow();
+		    computerConqueredSprites[i].dontShow();
 	
-		    fieldStatus[i] = 0;
+		    spriteStatus[i] = 0;
 		}
 	
 		playerPosition = 0;
@@ -82,17 +90,17 @@ public class MyMiniGame extends MiniGame
 		switch (action)
 		{
 		case DOWN:
-		    computerPosition = Math.min(computerPosition + 1, NR_OF_FIELDS - 1);
+		    computerPosition = Math.min(FIELD_SIZE - 1, computerPosition + 1);
 		    updatePositions();
 		    break;
 		case UP:
-		    computerPosition = Math.max(computerPosition - 1, 0);
+		    computerPosition = Math.max(0, computerPosition - 1);
 		    updatePositions();
 		    break;
 		case GO:
-		    fieldStatus[computerPosition] = 1;
-		    playerStoneSprites[computerPosition].dontShow();
-		    computerStoneSprites[computerPosition].show();
+		    spriteStatus[computerPosition] = 1;
+		    playerConqueredSprites[computerPosition].dontShow();
+		    computerConqueredSprites[computerPosition].show();
 		    break;
 		default:
 		    break;
@@ -105,7 +113,7 @@ public class MyMiniGame extends MiniGame
 		switch (action)
 		{
 		case DOWN:
-		    playerPosition = Math.min(playerPosition + 1, NR_OF_FIELDS - 1);
+		    playerPosition = Math.min(playerPosition + 1, FIELD_SIZE - 1);
 		    updatePositions();
 		    break;
 		case UP:
@@ -113,15 +121,18 @@ public class MyMiniGame extends MiniGame
 		    updatePositions();
 		    break;
 		case GO:
-		    fieldStatus[playerPosition] = 2;
-		    playerStoneSprites[playerPosition].show();
-		    computerStoneSprites[playerPosition].dontShow();
+		    spriteStatus[playerPosition] = 2;
+		    playerConqueredSprites[playerPosition].show();
+		    computerConqueredSprites[playerPosition].dontShow();
 		    break;
 		default:
 		    break;
 		}
     }
     
+    /**
+     * display info window after game has finished
+     */
     @Override
     protected void gameHasFinished()
     {
@@ -139,16 +150,20 @@ public class MyMiniGame extends MiniGame
     		winner = "It's a draw!";
     	}
     	
-    	System.out.println(winner);
+    	//System.out.println(winner);
+    	
+    	// display info window after game has finished
+        JOptionPane.showMessageDialog(new JFrame(), winner); // + "Player: " + playerScore + ",  Computer: " + computerScore);
+      
     }
     
     @Override
     public int getCurrentComputerScore()
     {
 		int computerScore = 0;
-		for (int i = 0; i < fieldStatus.length; i++)
+		for (int i = 0; i < spriteStatus.length; i++)
 		{
-		    if (fieldStatus[i] == 1)
+		    if (spriteStatus[i] == 1)
 		    {
 		    	++computerScore;
 		    }
@@ -160,9 +175,9 @@ public class MyMiniGame extends MiniGame
     public int getCurrentPlayerScore()
     {
 		int playerScore = 0;
-		for (int i = 0; i < fieldStatus.length; i++)
+		for (int i = 0; i < spriteStatus.length; i++)
 		{
-		    if (fieldStatus[i] == 2)
+		    if (spriteStatus[i] == 2)
 		    {
 		    	++playerScore;
 		    }
