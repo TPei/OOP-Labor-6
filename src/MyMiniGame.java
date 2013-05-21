@@ -58,8 +58,8 @@ public class MyMiniGame extends MiniGame
 		playerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 	
 		// create player and computer sprite
-		computerSprite.paintImage("icons/ship.png");
-		playerSprite.paintImage("icons/ship.png");
+		playerSprite.paintImage("icons/leftShip.png");
+		computerSprite.paintImage("icons/rightShip.png");
 		
 		requestFocus();
 		
