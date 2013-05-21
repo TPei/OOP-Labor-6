@@ -61,28 +61,6 @@ public class MyMiniGame extends MiniGame
 		playerSprite.paintImage("icons/leftShip.png");
 		computerSprite.paintImage("icons/rightShip.png");
 		
-		requestFocus();
-		
-		addKeyListener(new KeyListener()
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				System.out.println("keyTyped");
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				System.out.println("keyPressed");
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				System.out.println("keyReleased");
-			}
-		});
     }
     
     /**

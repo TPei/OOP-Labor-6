@@ -27,7 +27,7 @@ import MiniGamePackage.MiniGameObserver;
  * @author Thomas
  * 
  */
-public class MyMiniGameWindow extends JFrame implements MiniGameObserver
+public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyListener
 {
 	ImageButton upButton = new ImageButton("icons/upArrow.png");
 	ImageButton downButton = new ImageButton("icons/downArrow.png");
@@ -53,7 +53,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver
 		setSize(640, 825);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+		setFocusable(true);
 		// add buttons to toolbar
 		createButtons();
 
@@ -69,6 +69,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver
 		
 		setVisible(true);
 		// askForLevel();
+		addKeyListener(this);
 		
 	}
 
@@ -242,5 +243,50 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver
 			}
 		});
 
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		// TODO Auto-generated method stub
+		switch (e.getKeyCode()) 
+		{
+        case KeyEvent.VK_W:
+            System.out.println("up");
+            theGame.playerActionUp();
+            break;
+
+        case KeyEvent.VK_S:
+            System.out.println("down");
+            theGame.playerActionDown();
+            break;
+
+        case KeyEvent.VK_A:
+            System.out.println("A");
+            startCountdown();
+            break;
+            
+        case KeyEvent.VK_D:
+            System.out.println("D");
+            theGame.playerActionGo();
+            break;
+
+        default: 
+        	System.out.println("default");
+        	break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
