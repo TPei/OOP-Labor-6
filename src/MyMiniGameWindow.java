@@ -258,27 +258,22 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		switch (e.getKeyCode()) 
 		{
         case KeyEvent.VK_W:
-            System.out.println("up");
             theGame.playerActionUp();
             break;
 
         case KeyEvent.VK_S:
-            System.out.println("down");
             theGame.playerActionDown();
             break;
 
         case KeyEvent.VK_A:
-            System.out.println("A");
             startCountdown();
             break;
             
         case KeyEvent.VK_D:
-            System.out.println("D");
             theGame.playerActionGo();
             break;
 
         default: 
-        	System.out.println("default");
         	break;
 		}
 	}

@@ -148,17 +148,11 @@ public class MyMiniGame extends MiniGame
     {
     	String winner = "";
     	if(getCurrentComputerScore() > getCurrentPlayerScore())
-    	{
     		winner = "The Computer won!";
-    	}
     	else if(getCurrentComputerScore() < getCurrentPlayerScore())
-    	{
     		winner = "The Player won!";
-    	}
     	else
-    	{
     		winner = "It's a draw!";
-    	}
     	
     	//System.out.println(winner);
     	
@@ -225,8 +219,8 @@ public class MyMiniGame extends MiniGame
     private void updatePositions()
     {
     	// position player and computer sprite
-    	playerSprite.setPosition(200, playerPosition * 40 + POS_OFFSET);
-    	computerSprite.setPosition(400, computerPosition * 40 + POS_OFFSET);
+    	playerSprite.setPosition(100, playerPosition * 40 + POS_OFFSET);
+    	computerSprite.setPosition(500, computerPosition * 40 + POS_OFFSET);
     }
 
 }
