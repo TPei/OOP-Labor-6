@@ -29,8 +29,8 @@ import MiniGamePackage.MiniGameObserver;
  */
 public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyListener
 {
-	ImageButton upButton = new ImageButton("icons/upArrow.png");
-	ImageButton downButton = new ImageButton("icons/downArrow.png");
+	ImageButton upButton = new ImageButton("icons/leftArrow.png");
+	ImageButton downButton = new ImageButton("icons/rightArrow.png");
 	ImageButton attackButton = new ImageButton("icons/attack.png");
 	ImageButton startButton = new ImageButton("icons/start.png");
 
@@ -258,19 +258,23 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		switch (e.getKeyCode()) 
 		{
         case KeyEvent.VK_W:
-            theGame.playerActionUp();
+        	// fires
+        	theGame.playerActionGo();
             break;
 
         case KeyEvent.VK_S:
-            theGame.playerActionDown();
+        	// start game
+        	startCountdown();            
             break;
 
         case KeyEvent.VK_A:
-            startCountdown();
+        	// up is left
+        	theGame.playerActionUp();
             break;
             
         case KeyEvent.VK_D:
-            theGame.playerActionGo();
+        	// down is right
+        	theGame.playerActionDown();
             break;
 
         default: 
