@@ -25,6 +25,14 @@ public class MyMiniGame extends MiniGame
     // offset for sprites depending on field size, required so that field is centered
     final int POS_OFFSET = 60;
     
+    // time for laser animation
+    final int LASER_ANIMATION_TIME = 100;
+    
+    // start post for player and computer
+    final int PLAYER_X_POS = 100;
+    final int COMPUTER_X_POS = 500;
+    final int X_CENTER = 304; 
+    
     // 0: not set, 1: computer, 2: player
     int[] spriteStatus = new int[FIELD_SIZE]; 
     
@@ -35,6 +43,8 @@ public class MyMiniGame extends MiniGame
     
     Sprite[] computerConqueredSprites = getSprites(3);
     Sprite[] playerConqueredSprites = getSprites(4);
+    Sprite[] computerAnimationSprites = getSprites(5);
+    Sprite[] playerAnimationSprites = getSprites(6);
     
     int playerPosition = PLAYER_START_POS;
     int computerPosition = COMPUTER_START_POS;
@@ -56,6 +66,10 @@ public class MyMiniGame extends MiniGame
 		computerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 		playerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
 		playerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+		
+		// laser fire animation
+		computerAnimationSprites[0].paintEllipse(10, 10, 12, 12, -1, 255, 0, 0);
+		playerAnimationSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 	
 		// create player and computer sprite
 		playerSprite.paintImage("icons/leftShip.png");
@@ -71,10 +85,10 @@ public class MyMiniGame extends MiniGame
     {
 		for (int i = 0; i < FIELD_SIZE; i++)
 		{
-		    playerConqueredSprites[i].setPosition(304, i * 40 + POS_OFFSET);
-		    computerConqueredSprites[i].setPosition(304, i * 40 + POS_OFFSET);
+		    playerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
+		    computerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
 		    
-		    gameSprites[i].setPosition(304, i * 40 + POS_OFFSET);
+		    gameSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
 		    
 		    // make player and computer conquered sprites invisible
 		    playerConqueredSprites[i].dontShow();
@@ -100,17 +114,31 @@ public class MyMiniGame extends MiniGame
 		switch (action)
 		{
 		case DOWN:
+			// move computer sprite down
 		    computerPosition = Math.min(FIELD_SIZE - 1, computerPosition + 1);
 		    updatePositions();
 		    break;
 		case UP:
+			// move computer sprite up
 		    computerPosition = Math.max(0, computerPosition - 1);
 		    updatePositions();
 		    break;
 		case GO:
+			// move a sprite (representing a laser being fired) 
+			// from the computer's position to the sprite in the middle
+			computerAnimationSprites[computerPosition].setPosition(COMPUTER_X_POS, computerPosition * 40 + POS_OFFSET);
+			computerAnimationSprites[computerPosition].animateTo(X_CENTER, computerPosition * 40 + POS_OFFSET, LASER_ANIMATION_TIME);
+			
+			// repaint inner blue circle
+			computerConqueredSprites[computerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+			//computerAnimationSprites[computerPosition].dontShow();
+			
+			// change status of sprite (the player conquered it)
 		    spriteStatus[computerPosition] = 1;
-		    playerConqueredSprites[computerPosition].dontShow();
+		    // therefore we'll show the computerConqueredSprite  
+		    // and hide the playerConqueredSprite
 		    computerConqueredSprites[computerPosition].show();
+		    playerConqueredSprites[computerPosition].dontShow();
 		    break;
 		default:
 		    break;
@@ -123,15 +151,28 @@ public class MyMiniGame extends MiniGame
 		switch (action)
 		{
 		case DOWN:
+			// move playerSprite down
 		    playerPosition = Math.min(playerPosition + 1, FIELD_SIZE - 1);
 		    updatePositions();
 		    break;
 		case UP:
+			// moveplayerSprite up
 		    playerPosition = Math.max(playerPosition - 1, 0);
 		    updatePositions();
 		    break;
 		case GO:
+			// move a sprite (representing a laser being fired) 
+			// from the player's position to the sprite in the middle
+			playerAnimationSprites[playerPosition].setPosition(PLAYER_X_POS, playerPosition * 40 + POS_OFFSET);
+			playerAnimationSprites[playerPosition].animateTo(X_CENTER, playerPosition * 40 + POS_OFFSET, LASER_ANIMATION_TIME);
+			// repaint inner blue circle
+			playerConqueredSprites[playerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+			//playerAnimationSprites[playerPosition].dontShow();
+			
+			// change status of sprite (the player conquered it)
 		    spriteStatus[playerPosition] = 2;
+		    // therefore we'll show the playerConqueredSprite  
+		    // and hide the computerConqueredSprite
 		    playerConqueredSprites[playerPosition].show();
 		    computerConqueredSprites[playerPosition].dontShow();
 		    break;
@@ -219,8 +260,8 @@ public class MyMiniGame extends MiniGame
     private void updatePositions()
     {
     	// position player and computer sprite
-    	playerSprite.setPosition(100, playerPosition * 40 + POS_OFFSET);
-    	computerSprite.setPosition(500, computerPosition * 40 + POS_OFFSET);
+    	playerSprite.setPosition(PLAYER_X_POS, playerPosition * 40 + POS_OFFSET);
+    	computerSprite.setPosition(COMPUTER_X_POS, computerPosition * 40 + POS_OFFSET);
     }
 
 }
