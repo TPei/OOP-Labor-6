@@ -23,7 +23,7 @@ public class MyMiniGame extends MiniGame
     final int COMPUTER_START_POS = (int)(FIELD_SIZE / 2);
     
     // offset for sprites depending on field size, required so that field is centered
-    final int POS_OFFSET = 60;
+    final int POSITION_OFFSET = 60; 
     
     // time for laser animation
     final int LASER_ANIMATION_TIME = 100;
@@ -41,11 +41,17 @@ public class MyMiniGame extends MiniGame
     Sprite computerSprite = getSprite(1, 0);
     Sprite playerSprite = getSprite(2, 0);
     
+    // sprite representation for sprites in the center that have been conquered
+    // by a player or a computer
     Sprite[] computerConqueredSprites = getSprites(3);
     Sprite[] playerConqueredSprites = getSprites(4);
+    
+    // animation for player/computer GO action
+    // represents a laser being fired towards the center sprites
     Sprite[] computerAnimationSprites = getSprites(5);
     Sprite[] playerAnimationSprites = getSprites(6);
     
+    // initial player and computer position (y-center of all sprites)
     int playerPosition = PLAYER_START_POS;
     int computerPosition = COMPUTER_START_POS;
     
@@ -85,10 +91,12 @@ public class MyMiniGame extends MiniGame
     {
 		for (int i = 0; i < FIELD_SIZE; i++)
 		{
-		    playerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
-		    computerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
+			// set position for player (on the left) and computer (on the right) sprites
+		    playerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POSITION_OFFSET);
+		    computerConqueredSprites[i].setPosition(X_CENTER, i * 40 + POSITION_OFFSET);
 		    
-		    gameSprites[i].setPosition(X_CENTER, i * 40 + POS_OFFSET);
+		    // set position for sprites in the center
+		    gameSprites[i].setPosition(X_CENTER, i * 40 + POSITION_OFFSET);
 		    
 		    // make player and computer conquered sprites invisible
 		    playerConqueredSprites[i].dontShow();
@@ -126,8 +134,8 @@ public class MyMiniGame extends MiniGame
 		case GO:
 			// move a sprite (representing a laser being fired) 
 			// from the computer's position to the sprite in the middle
-			computerAnimationSprites[computerPosition].setPosition(COMPUTER_X_POS, computerPosition * 40 + POS_OFFSET);
-			computerAnimationSprites[computerPosition].animateTo(X_CENTER, computerPosition * 40 + POS_OFFSET, LASER_ANIMATION_TIME);
+			computerAnimationSprites[computerPosition].setPosition(COMPUTER_X_POS, computerPosition * 40 + POSITION_OFFSET);
+			computerAnimationSprites[computerPosition].animateTo(X_CENTER, computerPosition * 40 + POSITION_OFFSET, LASER_ANIMATION_TIME);
 			
 			// repaint inner blue circle
 			computerConqueredSprites[computerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
@@ -163,8 +171,8 @@ public class MyMiniGame extends MiniGame
 		case GO:
 			// move a sprite (representing a laser being fired) 
 			// from the player's position to the sprite in the middle
-			playerAnimationSprites[playerPosition].setPosition(PLAYER_X_POS, playerPosition * 40 + POS_OFFSET);
-			playerAnimationSprites[playerPosition].animateTo(X_CENTER, playerPosition * 40 + POS_OFFSET, LASER_ANIMATION_TIME);
+			playerAnimationSprites[playerPosition].setPosition(PLAYER_X_POS, playerPosition * 40 + POSITION_OFFSET);
+			playerAnimationSprites[playerPosition].animateTo(X_CENTER, playerPosition * 40 + POSITION_OFFSET, LASER_ANIMATION_TIME);
 			// repaint inner blue circle
 			playerConqueredSprites[playerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 			//playerAnimationSprites[playerPosition].dontShow();
@@ -260,8 +268,8 @@ public class MyMiniGame extends MiniGame
     private void updatePositions()
     {
     	// position player and computer sprite
-    	playerSprite.setPosition(PLAYER_X_POS, playerPosition * 40 + POS_OFFSET);
-    	computerSprite.setPosition(COMPUTER_X_POS, computerPosition * 40 + POS_OFFSET);
+    	playerSprite.setPosition(PLAYER_X_POS, playerPosition * 40 + POSITION_OFFSET);
+    	computerSprite.setPosition(COMPUTER_X_POS, computerPosition * 40 + POSITION_OFFSET);
     }
 
 }
