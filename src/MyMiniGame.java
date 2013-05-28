@@ -27,30 +27,41 @@ public class MyMiniGame extends MiniGame
     final int POSITION_OFFSET = 60; 
     
     // time for laser animation
-    final int LASER_ANIMATION_TIME = 100;
+    final int LASER_ANIMATION_TIME = 500;
     
     // start post for player and computer
     final int PLAYER_Y_POS = 500;
     final int COMPUTER_Y_POS = 100;
     final int Y_CENTER = 304;
+    final int COMPUTER_BASE_Y = 50;
+    final int PLAYER_BASE_Y = 550;
     
-    // 0: not set, 1: computer, 2: player
-    int[] spriteStatus = new int[FIELD_SIZE]; 
+    // additional score for hitting enemies directly
+    int computerExtraScore = 0;
+    int playerExtraScore = 0;
     
-    Sprite[] gameSprites = getSprites(0);
+    // 1: intact, 0: destroyed
+    int[] computerBaseStatus = new int[FIELD_SIZE];
+    int[] playerBaseStatus = new int[FIELD_SIZE];
     
+    // sprite for palyers
     Sprite computerSprite = getSprite(1, 0);
     Sprite playerSprite = getSprite(2, 0);
     
-    // sprite representation for sprites in the center that have been conquered
-    // by a player or a computer
-    Sprite[] computerConqueredSprites = getSprites(3);
-    Sprite[] playerConqueredSprites = getSprites(4);
-    
     // animation for player/computer GO action
     // represents a laser being fired towards the center sprites
-    Sprite[] computerAnimationSprites = getSprites(5);
-    Sprite[] playerAnimationSprites = getSprites(6);
+    Sprite[] computerAttackSprites = getSprites(3);
+    Sprite[] playerAttackSprites = getSprites(4);
+    
+    Sprite[] computerRepairSprites = getSprites(5);
+    Sprite[] playerRepairSprites = getSprites(6);
+    
+    // computer and player bases
+    Sprite[] computerBaseSprites = getSprites(7);
+    Sprite[] playerBaseSprites = getSprites(8);
+    
+    Sprite[] computerDestroyedBases = getSprites(9);
+    Sprite[] playerDestroyedBases = getSprites(10);
     
     // initial player and computer position (y-center of all sprites)
     int playerPosition = PLAYER_START_POS;
@@ -62,21 +73,36 @@ public class MyMiniGame extends MiniGame
     public MyMiniGame()
     {
     	// paint grey background
-		getBackgroundPicture().paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
+		getBackgroundPicture().paintImage("icons/space.jpg"); //paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
 		
 		// create neutral Sprites
+		/*
 		gameSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 255, 255);
 		gameSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+		*/
+		computerBaseSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
+		playerBaseSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
+		
+		computerDestroyedBases[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
+		playerDestroyedBases[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
 	
 		// create sprites that have been taken by player or computer
+		/*
 		computerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
 		computerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 		playerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
 		playerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+		*/
 		
 		// laser fire animation
-		computerAnimationSprites[0].paintEllipse(10, 10, 12, 12, -1, 255, 0, 0);
-		playerAnimationSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
+		computerAttackSprites[0].paintEllipse(10, 10, 12, 12, -1, 255, 0, 0);
+		playerAttackSprites[0].paintEllipse(10, 10, 12, 12, -1, 255, 0, 0);
+		
+		computerRepairSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 255, 0);
+		playerRepairSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 255, 0);
+		
+		//computerAnimationSprites[0].paintImage("icons/upDownAttack.png");
+		//playerAnimationSprites[0].paintImage("icons/downUpAttack.png"); 
 	
 		// create player and computer sprite
 		playerSprite.paintImage("icons/shipPointingUpwards.png");
@@ -91,19 +117,19 @@ public class MyMiniGame extends MiniGame
     protected void initGame()
     {
 		for (int i = 0; i < FIELD_SIZE; i++)
-		{
-			// set position for player (on the left) and computer (on the right) sprites
-		    playerConqueredSprites[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, Y_CENTER);
-		    computerConqueredSprites[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, Y_CENTER);
-		    
-		    // set position for sprites in the center
-		    gameSprites[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, Y_CENTER);
+		{     
+		    computerBaseSprites[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_BASE_Y);
+			playerBaseSprites[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_BASE_Y);
+			
+			computerDestroyedBases[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_BASE_Y);
+			playerDestroyedBases[i].setPosition(i * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_BASE_Y);
 		    
 		    // make player and computer conquered sprites invisible
-		    playerConqueredSprites[i].dontShow();
-		    computerConqueredSprites[i].dontShow();
+			computerDestroyedBases[i].dontShow();
+			playerDestroyedBases[i].dontShow();
 	
-		    spriteStatus[i] = 0;
+		    playerBaseStatus[i] = 1;
+		    computerBaseStatus[i] = 1;
 		}
 	
 		playerPosition = PLAYER_START_POS;
@@ -133,28 +159,55 @@ public class MyMiniGame extends MiniGame
 		    updatePositions();
 		    break;
 		case GO:
-			// move a sprite (representing a laser being fired) 
+			// move a sprite (representing a laser being fired)
 			// from the computer's position to the sprite in the middle
-			computerAnimationSprites[computerPosition].setPosition(computerPosition * 40 + POSITION_OFFSET, COMPUTER_Y_POS);
-			computerAnimationSprites[computerPosition].animateTo(computerPosition * 40 + POSITION_OFFSET, Y_CENTER, LASER_ANIMATION_TIME);
+			computerAttackSprites[computerPosition].setPosition(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_Y_POS);
+			computerRepairSprites[computerPosition].setPosition(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_Y_POS);
+			computerAttackSprites[computerPosition].dontShow();
+			computerRepairSprites[computerPosition].dontShow();
 			
-			// repaint inner blue circle
-			computerConqueredSprites[computerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
-			//computerAnimationSprites[computerPosition].dontShow();
-			
-			// change status of sprite (the player conquered it)
-		    spriteStatus[computerPosition] = 1;
-		    // therefore we'll show the computerConqueredSprite  
-		    // and hide the playerConqueredSprite
-		    computerConqueredSprites[computerPosition].show();
-		    playerConqueredSprites[computerPosition].dontShow();
+			if(computerPosition == playerPosition)
+			{
+				computerAttackSprites[computerPosition].animateTo(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_Y_POS, LASER_ANIMATION_TIME);
+				computerExtraScore++;
+				playerExtraScore--;
+			}
+			else
+			{	
+				// change status of sprites
+				if((playerBaseStatus[computerPosition] == 0) &&  (computerBaseStatus[computerPosition] == 0))
+				{	
+					computerRepairSprites[computerPosition].animateTo(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_BASE_Y, LASER_ANIMATION_TIME);
+					
+					// enemy base already destroyed, repair computer base
+			    	computerBaseStatus[computerPosition] = 1;
+			    	// 'reapir' a base
+				    computerBaseSprites[computerPosition].show();
+					computerDestroyedBases[computerPosition].dontShow();
+				}
+			    else if(playerBaseStatus[computerPosition] == 1)
+			    {
+			    	// enemy base intact -> destroy it
+			    	
+			    	computerAttackSprites[computerPosition].animateTo(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_BASE_Y, LASER_ANIMATION_TIME);
+
+			    	playerBaseStatus[computerPosition] = 0;
+			    	// 'destroy' a base
+					playerBaseSprites[computerPosition].dontShow();
+					playerDestroyedBases[computerPosition].show();
+			    }
+	   
+			    // 'destroy' a base
+				playerBaseSprites[computerPosition].dontShow();
+				playerDestroyedBases[computerPosition].show();
+			}
 		    break;
 		default:
 		    break;
 		}
     }
-    
-    @Override
+
+	@Override
     protected void playerMove(Action action)
     {
 		switch (action)
@@ -169,21 +222,45 @@ public class MyMiniGame extends MiniGame
 		    playerPosition = Math.max(playerPosition - 1, 0);
 		    updatePositions();
 		    break;
-		case GO:
-			// move a sprite (representing a laser being fired) 
-			// from the player's position to the sprite in the middle
-			playerAnimationSprites[playerPosition].setPosition(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_Y_POS);
-			playerAnimationSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, Y_CENTER, LASER_ANIMATION_TIME);
-			// repaint inner blue circle
-			playerConqueredSprites[playerPosition].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
-			//playerAnimationSprites[playerPosition].dontShow();
+		case GO:		
+			playerAttackSprites[playerPosition].setPosition(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_Y_POS);
+			playerRepairSprites[playerPosition].setPosition(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_Y_POS);
+			playerAttackSprites[playerPosition].dontShow();
+			playerRepairSprites[playerPosition].dontShow();
 			
-			// change status of sprite (the player conquered it)
-		    spriteStatus[playerPosition] = 2;
-		    // therefore we'll show the playerConqueredSprite  
-		    // and hide the computerConqueredSprite
-		    playerConqueredSprites[playerPosition].show();
-		    computerConqueredSprites[playerPosition].dontShow();
+			if(computerPosition == playerPosition)
+			{
+				playerAttackSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_Y_POS, LASER_ANIMATION_TIME);
+				playerExtraScore++;
+				computerExtraScore--;
+			}
+			else
+			{
+				if((computerBaseStatus[playerPosition] == 0) && (playerBaseStatus[playerPosition] == 0))
+				{
+					playerRepairSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_BASE_Y, LASER_ANIMATION_TIME);
+					
+					// computer base already destroyed -> repair player base
+			    	playerBaseStatus[playerPosition] = 1;
+			    	// 'repair' a base
+				 	playerBaseSprites[playerPosition].show();
+					playerDestroyedBases[playerPosition].dontShow();
+				}
+			    else if (computerBaseStatus[playerPosition] == 1)
+			    {
+			    	// computer base still intact -> destroy it
+			    	
+			    	// move a sprite (representing a laser being fired) 
+					// from the player's position to the sprite in the middle
+					playerAttackSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_BASE_Y, LASER_ANIMATION_TIME);
+			    	computerBaseStatus[playerPosition] = 0;
+			    	// 'destroy' a base
+				    computerBaseSprites[playerPosition].dontShow();
+					computerDestroyedBases[playerPosition].show();
+			    }
+				
+			}
+			
 		    break;
 		default:
 		    break;
@@ -215,28 +292,33 @@ public class MyMiniGame extends MiniGame
     public int getCurrentComputerScore()
     {
 		int computerScore = 0;
-		for (int i = 0; i < spriteStatus.length; i++)
+		for (int i = 0; i < playerBaseStatus.length; i++)
 		{
-		    if (spriteStatus[i] == 1)
+			// for every destroyed player base (base status 0) the computer get's a point
+		    if (playerBaseStatus[i] == 0)
 		    {
 		    	++computerScore;
 		    }
 		}
-		return computerScore;
+		
+		computerScore += computerExtraScore;
+		return Math.max(computerScore, 0);
     }
     
     @Override
     public int getCurrentPlayerScore()
     {
 		int playerScore = 0;
-		for (int i = 0; i < spriteStatus.length; i++)
+		for (int i = 0; i < computerBaseStatus.length; i++)
 		{
-		    if (spriteStatus[i] == 2)
+			// for every destroyed computer base (base status 0) the player get's a point
+		    if (computerBaseStatus[i] == 0)
 		    {
 		    	++playerScore;
 		    }
 		}
-		return playerScore;
+		playerScore += playerExtraScore;
+		return Math.max(playerScore, 0);
     }
     
     @Override

@@ -53,9 +53,9 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		setSize(640, 825);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setFocusable(true);
+		
 		// add buttons to toolbar
-		createButtons();
+		//createButtons();
 
 		// Menu for setting difficulty
 		createMenu();
@@ -68,7 +68,8 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		setTitle("Time left: 10s, Player: 0, Computer: 0");
 		
 		setVisible(true);
-		// askForLevel();
+
+		setFocusable(true);
 		addKeyListener(this);
 		
 	}
@@ -235,10 +236,10 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String infotext = "Attack planets with your space ship and conquer them. " + "\nWhoever occupies more planets in the end wins. "
-						+ "\nYour ship is on the left and when you conquer a planet it turns green. "
-						+ "\nNeutral Planets are white. Your opponent's planets are green. " + "\nThe Game ends after 10 seconds.";
-
+				String infotext = "Attack enemy base and destroy them!" +
+						"\nIf the enemy base is already destroyed where you fire, you can repair your own base" +
+						"\nYou can also increase your (and decrease the enemy) score by hitting the enemy ship" +
+						"\nControl with WASD or arrow keys (fire up/W, start game down/S)";
 				JOptionPane.showMessageDialog(new JFrame(), infotext);
 			}
 		});
