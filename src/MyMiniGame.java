@@ -75,24 +75,19 @@ public class MyMiniGame extends MiniGame
     	// paint grey background
 		getBackgroundPicture().paintImage("icons/space.jpg"); //paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
 		
-		// create neutral Sprites
+		// create computer and player bases
+		// cases for intact and destroyed bases
 		/*
-		gameSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 255, 255);
-		gameSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
-		*/
 		computerBaseSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
 		playerBaseSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
-		
 		computerDestroyedBases[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
 		playerDestroyedBases[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
-	
-		// create sprites that have been taken by player or computer
-		/*
-		computerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
-		computerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
-		playerConqueredSprites[0].paintEllipse(5, 5, 22, 22, -1, 0, 255, 0);
-		playerConqueredSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 50, 100);
 		*/
+		computerBaseSprites[0].paintImage("icons/upperBase.png");
+		playerBaseSprites[0].paintImage("icons/lowerBase.png");
+		
+		computerDestroyedBases[0].paintImage("icons/upperJunk.png");
+		playerDestroyedBases[0].paintImage("icons/lowerJunk.png");
 		
 		// laser fire animation
 		computerAttackSprites[0].paintEllipse(10, 10, 12, 12, -1, 255, 0, 0);
@@ -100,9 +95,6 @@ public class MyMiniGame extends MiniGame
 		
 		computerRepairSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 255, 0);
 		playerRepairSprites[0].paintEllipse(10, 10, 12, 12, -1, 0, 255, 0);
-		
-		//computerAnimationSprites[0].paintImage("icons/upDownAttack.png");
-		//playerAnimationSprites[0].paintImage("icons/downUpAttack.png"); 
 	
 		// create player and computer sprite
 		playerSprite.paintImage("icons/shipPointingUpwards.png");
@@ -268,11 +260,13 @@ public class MyMiniGame extends MiniGame
     }
     
     /**
-     * display info window after game has finished
+     * check who won and create an info string accordingly
+     * then display it in an info window
      */
     @Override
     protected void gameHasFinished()
     {
+    	// check who won and create an info string accordingly
     	String winner = "";
     	if(getCurrentComputerScore() > getCurrentPlayerScore())
     		winner = "The Computer won!";
