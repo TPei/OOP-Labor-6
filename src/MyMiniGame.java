@@ -160,7 +160,7 @@ public class MyMiniGame extends MiniGame
 			
 			if(computerPosition == playerPosition)
 			{
-				computerAttackSprites[computerPosition].animateTo(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_Y_POS, LASER_ANIMATION_TIME);
+				computerAttackSprites[computerPosition].animateTo(computerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, PLAYER_BASE_Y /*PLAYER_Y_POS*/, LASER_ANIMATION_TIME);
 				computerExtraScore++;
 				playerExtraScore--;
 			}
@@ -222,7 +222,7 @@ public class MyMiniGame extends MiniGame
 			
 			if(computerPosition == playerPosition)
 			{
-				playerAttackSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_Y_POS, LASER_ANIMATION_TIME);
+				playerAttackSprites[playerPosition].animateTo(playerPosition * NEXT_FIELD_MULTIPLIER + POSITION_OFFSET, COMPUTER_BASE_Y/*COMPUTER_Y_POS*/, LASER_ANIMATION_TIME);
 				playerExtraScore++;
 				computerExtraScore--;
 			}

@@ -50,7 +50,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 	 */
 	public MyMiniGameWindow()
 	{
-		setSize(640, 825);
+		setSize(640, 640);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
