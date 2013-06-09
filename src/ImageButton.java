@@ -1,7 +1,8 @@
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-/** extends JButton,
+/** 
+ * extends JButton,
  * automatically sets image path for button to given path
  * 
  * @author Thomas

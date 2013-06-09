@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -9,14 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import MiniGamePackage.MiniGameObserver;
