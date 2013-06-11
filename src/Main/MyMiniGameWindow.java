@@ -1,3 +1,4 @@
+package Main;
 import java.awt.BorderLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import MiniGame.MyMiniGame;
 import MiniGamePackage.MiniGameObserver;
 
 /**

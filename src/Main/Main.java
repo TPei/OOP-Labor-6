@@ -1,3 +1,4 @@
+package Main;
 public class Main
 {
 	/**create a GameFrame object
