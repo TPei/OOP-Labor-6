@@ -246,9 +246,12 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 	}
 
 	@Override
+	/**
+	 * triggers key events to start game / fire / move
+	 */
 	public void keyPressed(KeyEvent e)
 	{
-		// TODO Auto-generated method stub
+		// switch case for key events
 		switch (e.getKeyCode()) 
 		{
         case KeyEvent.VK_W:
@@ -258,7 +261,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 
         case KeyEvent.VK_S:
         	// start game
-        	startCountdown();            
+        	startCountdown();
             break;
 
         case KeyEvent.VK_A:
@@ -270,6 +273,20 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
         	// down is right
         	theGame.playerActionDown();
             break;
+            
+        // arrow controls as if
+        case KeyEvent.VK_UP:
+        	theGame.playerActionUp();
+        	break;
+        case KeyEvent.VK_DOWN:
+        	theGame.playerActionDown();
+        	break;
+        case KeyEvent.VK_SPACE:
+        	theGame.playerActionGo();
+        	break;
+        case KeyEvent.VK_RIGHT:
+        	startCountdown();
+        	break;
 
         default: 
         	break;

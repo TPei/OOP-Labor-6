@@ -22,7 +22,7 @@ public class MyMiniGame extends MiniGame
     final int POSITION_OFFSET = 60; 
     
     // time for laser animation
-    final int LASER_ANIMATION_TIME = 500;
+    final int LASER_ANIMATION_TIME = 250;
     
     // start post for player and computer
     final int PLAYER_Y_POS = 500;
