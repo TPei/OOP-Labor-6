@@ -54,7 +54,6 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 
 		// Menu for setting difficulty
 		createMenu();
-
 		add(theGame, BorderLayout.CENTER);
 		theGame.registerMiniGameObserver(this);
 
@@ -158,7 +157,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 	/**
 	 * creates and returns JPanel with all needed buttons
 	 * 
-	 * @return JPanel consisting of all the buttons
+	 * creates JPanel consisting of all the buttons
 	 */
 	public void createButtons()
 	{
@@ -204,7 +203,7 @@ public class MyMiniGameWindow extends JFrame implements MiniGameObserver, KeyLis
 	/**
 	 * creates and returns a menubar with all needed menu entries
 	 * 
-	 * @return menubar with all needed menu entries
+	 * creates menubar with all needed menu entries
 	 */
 	public void createMenu()
 	{

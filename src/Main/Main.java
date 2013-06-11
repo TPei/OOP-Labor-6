@@ -1,7 +1,8 @@
 package Main;
 public class Main
 {
-	/**create a GameFrame object
+	/**
+	 * create a GameFrame object
 	 * @param args
 	 */
 	public static void main(String[] args)

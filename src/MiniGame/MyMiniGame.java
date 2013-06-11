@@ -80,6 +80,7 @@ public class MyMiniGame extends MiniGame
 		playerDestroyedBases[0].paintEllipse(5, 5, 22, 22, -1, 255, 0, 0);
 		*/
 		computerBaseSprites[0].paintImage("icons/upperBase.png");
+		//computerBaseSprites[0].paintImage(getClass().getClassLoader().getResource("icons/upperBase.png").toString());
 		playerBaseSprites[0].paintImage("icons/lowerBase.png");
 		
 		computerDestroyedBases[0].paintImage("icons/upperJunk.png");
