@@ -69,7 +69,7 @@ public class MyMiniGame extends MiniGame
     public MyMiniGame()
     {
     	// paint grey background
-		getBackgroundPicture().paintImage("icons/space.jpg"); //paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
+		getBackgroundPicture().paintImage("/icons/space.jpg"); //paintRectangle(0, 0, 640, 640, -1, 100, 100, 100);
 		
 		// create computer and player bases
 		// cases for intact and destroyed bases
